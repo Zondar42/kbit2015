@@ -7,7 +7,7 @@ import lolPoint
 
 	
 class Displayer:
-	def __init__(self, _width, _height, _mobList, _modelList, _maxFPS = 10):
+	def __init__(self, _width, _height, _mobList, _modelList, _maxFPS = 60):
 		self.height = _height
 		self.halfHeight = _height/2
 		self.width = _width

@@ -37,9 +37,10 @@ class Model:
 		self.camPos_wrld = newCamPos
 	
 	def isVisible(self, pos_wrld):
-		if self.camPos_wrld.z < pos_wrld.z:
-			return True
-		return False
+		for pnt_wrld in self.pntList_wrld:
+			if (self.camPos_wrld.z + pos_wrld.z + pnt_wrld.z) <= 0:
+				return False
+		return True
 	def generatePointList(self, pos_wrld):
 		# if the player has moved reproject all the points
 		#print pos_wrld

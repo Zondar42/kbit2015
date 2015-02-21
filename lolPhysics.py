@@ -30,8 +30,8 @@ class MobileOb:
 				sqrdCmpntLen = (self.totTargetDistSqrd - 
 					self.targetDistSqrd.get((i+1)%3) - 
 					self.targetDistSqrd.get((i+2)%3))
-				print "sqrdCmpntLen"
-				print sqrdCmpntLen
+				#print "sqrdCmpntLen"
+				#print sqrdCmpntLen
 				# sqrdCmpntLen should only be negative by a small amount due 
 				#  to float errors
 				if sqrdCmpntLen >= 0:
@@ -41,8 +41,6 @@ class MobileOb:
 					# If the component dimension is zero, we have no velocity 
 					#  in that dimension
 					self.velocity.set(i, 0)
-			print "Velocity"
-			self.velocity.show()
 
 	# Calculate distance to target, both as a vector and as raw distance squared
 	def getDist(self):
@@ -76,7 +74,7 @@ class SmartOb(MobileOb):
 		self.numWyPnt = 5
 		self.currWyPnt = 1
 		self.target = self.wayPntList[self.currWyPnt]
-		self.epsilon = 20
+		self.epsilon = 15
 		MobileOb.__init__(self, self.target, _model, _spd, _pos)
 	
 	def update(self, timeDelta_ms):
@@ -89,10 +87,8 @@ class SmartOb(MobileOb):
 		# Check if we're close enough to the target, but also if we've 
 		#  passed it
 		if self.colide(self.target):
-			print "Old target : "
-			self.target.show()
-			print "Reached: "
-			self.pos.show()
+			# Jump to the correct position to make life easier
+			self.pos = self.target
 			MobileOb.getDist(self)
 			self.currWyPnt = (self.currWyPnt + 1)%self.numWyPnt
 			self.target = self.wayPntList[self.currWyPnt]
