@@ -1,19 +1,20 @@
+import lolPoint
 
 class Model:
 	def __init__(self):
 		self.focalLen = 100
-		self.camPos_wrld = [0,0,0]
-		self.pos = [0, 0, 0]
+		self.camPos_wrld = lolPoint.lolPoint(0, 0, 0)
+		self.pos = lolPoint.lolPoint(0, 0, 0)
 		self.numLines = 12
 		self.numPnts = 8
-		self.pntList_wrld = [[-50, 50, 50, 1],#0
-			[-50, 50, 150, 1],#1
-			[50, 50, 150, 1],#2
-			[50, 50, 50, 1],#3
-			[-50, -50, 50, 1],#4
-			[-50, -50, 150, 1],#5
-			[50, -50, 150, 1],#6
-			[50, -50, 50, 1]]#7
+		self.pntList_wrld = [lolPoint.lolPoint(-50, 50, -50),#0
+			lolPoint.lolPoint(-50, 50, 50),#1
+			lolPoint.lolPoint(50, 50, 50),#2
+			lolPoint.lolPoint(50, 50, -50),#3
+			lolPoint.lolPoint(-50, -50, -50),#4
+			lolPoint.lolPoint(-50, -50, 50),#5
+			lolPoint.lolPoint(50, -50, 50),#6
+			lolPoint.lolPoint(50, -50, -50)]#7
 		# The line list is relative, and therefore has no coord specifier
 		self.lineList = [[0, 1],
 			[1, 5],
@@ -35,6 +36,10 @@ class Model:
 	def updateCamPos(self, newCamPos):
 		self.camPos_wrld = newCamPos
 	
+	def isVisible(self, pos_wrld):
+		if self.camPos_wrld.z < pos_wrld.z:
+			return True
+		return False
 	def generatePointList(self, pos_wrld):
 		# if the player has moved reproject all the points
 		#print pos_wrld
@@ -44,15 +49,11 @@ class Model:
 		return pntList_cam
 
 	def getCamPnt(self, vertex_wrld, pos_wrld):
-		pnt_wrld = []
-		for i in range(0, 3):
-			pnt_wrld.append(vertex_wrld[i] + pos_wrld[i])
-		# Add the scaling value, starts at 1
-		pnt_wrld.append(1)
-		
+		pnt_wrld = vertex_wrld.add(pos_wrld)
 		# Project the world line and dehomogenize
-		_pnt_cam = [self.focalLen*pnt_wrld[0] + self.camPos_wrld[0]*pnt_wrld[3],
-			self.focalLen*pnt_wrld[1] + self.camPos_wrld[1]*pnt_wrld[3],
-			pnt_wrld[2] + self.camPos_wrld[2]*pnt_wrld[3]]
-		pnt_cam = [_pnt_cam[0]/_pnt_cam[2], _pnt_cam[1]/_pnt_cam[2], 1]
+		_pnt_cam = lolPoint.lolPoint(self.focalLen*(pnt_wrld.x + self.camPos_wrld.x),# + self.camPos_wrld.x * pnt_wrld.z,
+			self.focalLen*(pnt_wrld.y + self.camPos_wrld.y),# + self.camPos_wrld.y * pnt_wrld.z,
+			(pnt_wrld.z + self.camPos_wrld.z))# + self.camPos_wrld.z * pnt_wrld.z)
+		# We dont use a lol point since this is a nonhomogenous 2d point
+		pnt_cam = [_pnt_cam.x/_pnt_cam.z, _pnt_cam.y/_pnt_cam.z, ]
 		return pnt_cam
