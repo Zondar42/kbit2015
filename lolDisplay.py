@@ -1,15 +1,19 @@
 import Tkinter
+from Tkinter import Tk
+import time
 import lolPhysics
 import lolModel
 
 class Displayer:
-	def __init__(self, _width, _height, _mobList, _modelList):
+	def __init__(self, _width, _height, _mobList, _modelList, _maxFPS = 10):
 		self.height = _height
 		self.halfHeight = _height/2
 		self.width = _width
 		self.halfWidth  = _width/2
 		self.mobList = _mobList
 		self.modelList = _modelList
+		self.maxFPS = _maxFPS
+		self.frameDelay = 1000/self.maxFPS
 		self.focalLen = 100
 		self.camPos_wrld = (70, 70, 0)
 		self.tkMaster = Tkinter.Tk()
@@ -29,13 +33,26 @@ class Displayer:
 				pointList_cam[linePnt2][0] + self.halfWidth, 
 				pointList_cam[linePnt2][1] + self.halfHeight, 
 				fill="green")
-
-	def update(self, tDelta):
+	#takes care of the timing overhead and then calls the real update
+	def update(self):
+		endTime_ms = time.clock()*1000
+		timeDelta_ms = self.startTime_ms - endTime_ms
+		self.startTime_ms = time.clock()*1000
+		self._update(timeDelta_ms)
+		# TODO: set the frame delay so we reach the target frame delay
+		self.tkMaster.after(self.frameDelay, self.update)
+	
+	# Takes timeDelta_ms time change in milliseconds
+	def _update(self, timeDelta_ms):
+		# replace with calls moving lines instead
+		self.canvas.delete('all')
 		for model in self.modelList:
 			model.updateCamPos(self.camPos_wrld)
 		for mob in self.mobList:
-			mob.update(tDelta)
+			mob.update(timeDelta_ms)
 			self.drawModel(mob.model.generatePointList(mob.pos), mob.model)
 			
 	def mainLoop(self):
+		self.startTime_ms = time.clock()*1000
+		self.tkMaster.after(self.frameDelay, self.update)
 		self.tkMaster.mainloop()

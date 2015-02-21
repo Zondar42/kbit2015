@@ -37,6 +37,7 @@ class Model:
 	
 	def generatePointList(self, pos_wrld):
 		# if the player has moved reproject all the points
+		#print pos_wrld
 		pntList_cam = []
 		for i in range(0, self.numPnts):
 			pntList_cam.append(self.getCamPnt(self.pntList_wrld[i], pos_wrld))
@@ -53,6 +54,5 @@ class Model:
 		_pnt_cam = [self.focalLen*pnt_wrld[0] + self.camPos_wrld[0]*pnt_wrld[3],
 			self.focalLen*pnt_wrld[1] + self.camPos_wrld[1]*pnt_wrld[3],
 			pnt_wrld[2] + self.camPos_wrld[2]*pnt_wrld[3]]
-		print _pnt_cam[2]
 		pnt_cam = [_pnt_cam[0]/_pnt_cam[2], _pnt_cam[1]/_pnt_cam[2], 1]
 		return pnt_cam
