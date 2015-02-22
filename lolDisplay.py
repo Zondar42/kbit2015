@@ -16,7 +16,7 @@ class Displayer:
 		self.modelList = _modelList
 		self.maxFPS = _maxFPS
 		self.frameDelay = 1000/self.maxFPS
-		self.focalLen = 100
+		self.focalLen = 500
 		self.camPos_wrld = lolPoint.lolPoint(0, 0, 0)
 		self.tkMaster = Tkinter.Tk()
 		self.canvas = Tkinter.Canvas(self.tkMaster, width=self.width, 

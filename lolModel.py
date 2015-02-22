@@ -1,37 +1,14 @@
 import lolPoint
 
 class Model:
-	def __init__(self):
-		self.focalLen = 100
+	def __init__(self, _focalLen, _pntList_wrld, _numPnts, _lineList, _numLines):
 		self.camPos_wrld = lolPoint.lolPoint(0, 0, 0)
 		self.pos = lolPoint.lolPoint(0, 0, 0)
-		self.numLines = 12
-		self.numPnts = 8
-		self.pntList_wrld = [lolPoint.lolPoint(-50, 50, -50),#0
-			lolPoint.lolPoint(-50, 50, 50),#1
-			lolPoint.lolPoint(50, 50, 50),#2
-			lolPoint.lolPoint(50, 50, -50),#3
-			lolPoint.lolPoint(-50, -50, -50),#4
-			lolPoint.lolPoint(-50, -50, 50),#5
-			lolPoint.lolPoint(50, -50, 50),#6
-			lolPoint.lolPoint(50, -50, -50)]#7
-		# The line list is relative, and therefore has no coord specifier
-		self.lineList = [[0, 1],
-			[1, 5],
-			[5, 4],
-			[4, 0],# left wall
-			
-			[1, 2],
-			[2, 6],
-			[6, 5],# back wall
-			
-			[0, 3],
-			[3, 2],# bottom wall
-			
-			[3, 7],
-			[7, 6],# right wall
-			
-			[4, 7]]# top wall
+		self.focalLen = _focalLen
+		self.pntList_wrld = _pntList_wrld
+		self.numPnts = _numPnts
+		self.lineList = _lineList
+		self.numLines = _numLines
 
 	def updateCamPos(self, newCamPos):
 		self.camPos_wrld = newCamPos

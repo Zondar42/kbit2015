@@ -3,6 +3,15 @@ import lolModel
 import copy
 from math import sqrt
 
+class Doodad:
+	# spd: speed in pixels per second
+	def __init__(self, _model, _pos = lolPoint.lolPoint(0, 0, 0)):
+		self.model = _model
+		self.pos = _pos
+
+	def update(self, timeDelta_ms):
+		pass
+		
 # The way points will have to be moved out into an AI object
 class MobileOb:
 	# spd: speed in pixels per second
@@ -64,7 +73,7 @@ class MobileOb:
 # The way points will have to be moved out into an AI object
 class SmartOb(MobileOb):
 	# takes speed in pixels per second
-	def __init__(self, _model, _spd = 200.0, _pos = lolPoint.lolPoint(0, 0, 250)):
+	def __init__(self, _model, _spd = 0.0, _pos = lolPoint.lolPoint(0, 0, 250)):
 		self.wayPntList =[lolPoint.lolPoint(0, 0, 20),
 			lolPoint.lolPoint(0, 0, 1020),
 			lolPoint.lolPoint(0, 1000, 1020),
